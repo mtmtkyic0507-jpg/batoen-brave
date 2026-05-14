@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BATOEN BRAVE</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="app">
+
+  <!-- ホーム -->
+  <section id="home" class="screen">
+
+    <div class="top-bar"></div>
+
+    <div class="logo">
+      BATOEN<br>
+      <span>BRAVE</span>
+    </div>
+
+    <div class="name-area">
+
+      <label>勇者の名前</label>
+
+      <input
+        id="nameInput"
+        placeholder="名前を入力"
+      >
+
+    </div>
+
+    <button
+      class="birth-button"
+      onclick="createHero()"
+    >
+      勇者を誕生させる。
+    </button>
+
+    <div class="sub-text">
+      ルーレットが運命を決める
+    </div>
+
+  </section>
+
+  <!-- メニュー -->
+  <section id="menu" class="screen hidden">
+
+    <div class="top-bar"></div>
+
+    <div class="menu-box">
+
+      <h2 id="welcome"></h2>
+
+      <button
+        class="menu-btn"
+        onclick="showBattleSelect()"
+      >
+        CPUバトル
+      </button>
+
+      <button
+        class="menu-btn"
+        onclick="showOnline()"
+      >
+        Online対戦
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- ONLINE -->
+  <section id="online" class="screen hidden">
+
+    <div class="top-bar"></div>
+
+    <div class="menu-box">
+
+      <h2>ONLINE 対戦</h2>
+
+      <input
+        id="roomInput"
+        placeholder="部屋コード"
+      >
+
+      <br><br>
+
+      <button
+        class="menu-btn"
+        onclick="createRoom()"
+      >
+        部屋を作る
+      </button>
+
+      <button
+        class="menu-btn"
+        onclick="joinRoom()"
+      >
+        部屋に入る
+      </button>
+
+      <br><br>
+
+      <div id="roomStatus"></div>
+
+      <button
+        class="menu-btn"
+        onclick="backToMenu()"
+      >
+        戻る
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- CPU選択 -->
+  <section id="select" class="screen hidden">
+
+    <div class="top-bar"></div>
+
+    <div class="menu-box">
+
+      <h2>対戦形式を選べ</h2>
+
+      <button
+        class="menu-btn"
+        onclick="startGame(1)"
+      >
+        1体 VS 1体
+      </button>
+
+      <button
+        class="menu-btn"
+        onclick="startGame(2)"
+      >
+        2体 VS 2体
+      </button>
+
+      <button
+        class="menu-btn"
+        onclick="startGame(3)"
+      >
+        3体 VS 3体
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- ガチャ -->
+  <section id="gacha" class="screen hidden">
+
+    <div class="top-bar"></div>
+
+    <div class="castle-scene">
+
+      <h2>魔王城から仲間召喚</h2>
+
+      <div id="demonCastleEmoji">
+        🏰
+      </div>
+
+      <button
+        id="gachaBtn"
+        class="menu-btn"
+        onclick="drawFromCastle()"
+      >
+        魔王城の門をひらく
+      </button>
+
+      <div id="monsterAppear">？</div>
+
+      <div id="gachaResult"></div>
+
+    </div>
+
+  </section>
+
+  <!-- 順番 -->
+  <section id="prepare" class="screen hidden">
+
+    <div class="top-bar"></div>
+
+    <div class="prepare-box">
+
+      <h2>出す順番を決めろ！</h2>
+
+      <p class="prepare-text">
+        キャラを選んで順番を入れ替えよう。
+      </p>
+
+      <div class="prepare-columns">
+
+        <!-- プレイヤー -->
+        <div class="prepare-card">
+
+          <h3 id="preparePlayerName"></h3>
+
+          <div id="playerOrderList"></div>
+
+          <button
+            class="ready-btn"
+            id="playerReadyBtn"
+            onclick="playerReady()"
+          >
+            準備OK
+          </button>
+
+        </div>
+
+        <!-- CPU -->
+        <div class="prepare-card cpu-ready-card">
+
+          <h3>CPU</h3>
+
+          <div id="cpuOrderList"></div>
+
+          <button
+            class="ready-btn enemy-ready"
+            id="cpuReadyBtn"
+          >
+            相手の準備中...
+          </button>
+
+        </div>
+
+      </div>
+
+      <div id="readyMessage"></div>
+
+    </div>
+
+  </section>
+
+  <!-- バトル -->
+  <section id="battle" class="screen hidden">
+
+    <button
+      class="giveup-btn"
+      onclick="giveUpBattle()"
+    >
+      戦いを諦める
+    </button>
+
+    <div class="top-bar"></div>
+
+    <div class="battle-area">
+
+      <div class="teams">
+
+        <!-- PLAYER -->
+        <div class="card">
+
+          <h3 id="pName"></h3>
+
+          <p id="pChar"></p>
+
+          <p id="pType"></p>
+
+          <div class="hp">
+            <span id="pBar"></span>
+          </div>
+
+          <p>
+            HP
+            <span id="pHp"></span>
+            /100
+          </p>
+
+        </div>
+
+        <!-- CPU -->
+        <div class="card">
+
+          <h3>CPU</h3>
+
+          <p id="cChar"></p>
+
+          <p id="cType"></p>
+
+          <div class="hp">
+            <span id="cBar"></span>
+          </div>
+
+          <p>
+            HP
+            <span id="cHp"></span>
+            /100
+          </p>
+
+        </div>
+
+      </div>
+
+      <div id="commandDetails"></div>
+
+      <div id="roulette">？</div>
+
+      <div id="bigMessage"></div>
+
+      <div id="log">
+        バトル開始！
+      </div>
+
+      <button
+        class="menu-btn"
+        id="spinBtn"
+        onclick="playerSpin()"
+      >
+        ルーレットを回す
+      </button>
+
+      <div id="resultButtons" class="hidden">
+
+        <button
+          class="menu-btn"
+          onclick="restartBattle()"
+        >
+          もう一度
+        </button>
+
+        <button
+          class="menu-btn"
+          onclick="backHome()"
+        >
+          終わる
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+<!-- Firebase -->
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getDatabase,
+  ref,
+  set,
+  onValue,
+  update
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyCDkSv6VopOxTTpOHmMxooDG7zbTzE01YM",
+
+  authDomain: "dorakue-ad8c1.firebaseapp.com",
+
+  databaseURL:
+    "https://dorakue-ad8c1-default-rtdb.firebaseio.com",
+
+  projectId: "dorakue-ad8c1",
+
+  storageBucket:
+    "dorakue-ad8c1.firebasestorage.app",
+
+  messagingSenderId: "641957981422",
+
+  appId:
+    "1:641957981422:web:5b888e8502c1fea30517ff",
+
+  measurementId: "G-K7L6F00TQZ"
+};
+
+const app = initializeApp(firebaseConfig);
+
+window.db = getDatabase(app);
+window.dbRef = ref;
+window.dbSet = set;
+window.dbOnValue = onValue;
+window.dbUpdate = update;
+
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
